@@ -87,14 +87,17 @@ export default class DefaultPopup extends Component {
   _onPanResponderMove = (e, gestureState) => {
     // console.log('_onPanResponderMove', gestureState);  // DEBUG
     const { containerDragOffsetY } = this.state;
+
     // Prevent dragging down too much
     if (containerDragOffsetY._value > 50) return;  // TODO: customize
     containerDragOffsetY.setValue(gestureState.dy);
   }
 
   _onPanResponderRelease = (e, gestureState) => {
-    // console.log('_onPanResponderRelease', gestureState);  // DEBUG
-    const { containerDragOffsetY } = this.state;
+    //console.log('_onPanResponderRelease', gestureState);  // DEBUG
+    const { containerDragOffsetY, onPress } = this.state;
+
+    if (gestureState.dy <= 5 && gestureState.dy >= -5) onPress();
     if (containerDragOffsetY._value < -30) {  // TODO: turn into constant
       // 1. If leaving screen -> slide out
       this.slideOutAndDismiss(200);
